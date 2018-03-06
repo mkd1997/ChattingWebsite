@@ -2,81 +2,69 @@
 session_start();
 //ob_start();
 
-              try  {
-$dbhandler = new PDO('mysql:host=localhost;dbname=mydata', 'root', 'bhargav');
-$dbhandler->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
- if (isset($_POST['uname']) && isset($_POST['pass']))
-                    {
-                        
-                        $sql = "SELECT password from useraccounts where username='".$_POST['uname']."'";
-                        $query = $dbhandler->query($sql);
-                        $result= $query->fetch(PDO::FETCH_ASSOC);
-                        if(count($result)===1 && ($result['password']===$_POST['pass']))
-                        {
-                           
-                                $_SESSION['logged_in'] = true;
-                                $_SESSION['uname']=$_POST['uname'];
-                               
-                                header("location:home1.php");
-                                die();
-                                   
-                           
-                                
-                               
-                         }
-                            
-                        
-                         else
-                            {
-                                header("location:Login.php?msg=Invalid Login Detail");
-                                die();
-                            }
-                        
-                    }
-                    
-           
-                  } catch (PDOException $e)
-                {
-                    echo $e->getMessage();
-                    
-                }
+try
+{
+    $dbhandler = new PDO('mysql:host=localhost;dbname=mydata', 'root');
+    $dbhandler->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    if (isset($_POST['uname']) && isset($_POST['pass']))
+    {
 
-                
-                ?>
+    $sql = "SELECT password from useraccounts where username='{$_POST['uname']}' ";
+        $query = $dbhandler->query($sql);
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        if (count($result) === 1 && ($result['password'] === $_POST['pass']))
+        {
+
+            $_SESSION['logged_in'] = true;
+            $_SESSION['uname'] = $_POST['uname'];
+
+            header("location:home.php");
+            die();
+        } else
+        {
+            header("location:Login.php?msg=Invalid Login Detail");
+            die();
+        }
+    }
+} catch (PDOException $e)
+{
+    echo $e->getMessage();
+}
+?>
 <!--This Page is ready-->
 <!--Login Page-->
 
 <html>
     <head>
+        <link rel="stylesheet" type="text/css" href="ProfileViewStyleSheet.css">
         <script>
-        function textfocus()
+            function textfocus()
             {
-                if(document.forms.username.value=="")
-                    {
-                        document.forms.username.focus();
-                        
-                    }
-                else{
-                    document.forms.pass.focus();   
+                if (document.forms.username.value == "")
+                {
+                    document.forms.username.focus();
+
+                } else {
+                    document.forms.pass.focus();
                 }
             }
         </script>
     </head>
     <body style="background-color:lightgreen">
         <form  action="Login.php" method="POST">
-            <table border="1">
+            <table class="w3-table w3-container" >
                 <tr>
-                    <h1>
-                        <?php
-                        if (isset($_GET['msg']))
-                        {
-                            echo $_GET['msg'];
-                        } else
-                        {
-                            echo "Login to Chat ";
-                        }
-                        ?>
-                    </h1>
+                <h1>
+                    <?php
+                    if (isset($_GET['msg']))
+                    {
+                        echo $_GET['msg'];
+                    } else
+                    {
+                        echo "Login to Chat ";
+                    }
+                    ?>
+                </h1>
                 </tr>
 
                 <tr>
@@ -88,12 +76,12 @@ $dbhandler->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     <td>Password: </td>
                     <td><input type="password" name="pass" /></td>
                 </tr>
-                
+
                 <tr>
                     <td colspan=2><input type="submit" value="submit" /></td>
                 </tr>
-                </table>
+            </table>
 
-         </form>
-         </body>
-         </html>       
+        </form>
+    </body>
+</html>       

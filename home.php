@@ -1,73 +1,129 @@
-<!--Home Page-->
 <?php
+ob_start();
 session_start();
-if (!isset($_SESSION['uname']))
+if($_SESSION['logged_in']!==true)
 {
-    header("location:index.php?msg=Please Login First");
+    header("location:Login.php");
     die();
-} else
-{
-    $u = $_SESSION['uname'];
 }
-$dbhandler = new PDO('mysql:host=localhost;dbname=mydata', 'root', 'bhargav');
+else{
+    $dbhandler = new PDO('mysql:host=localhost;dbname=mydata', 'root');
 //echo '1';
 //$dbhandler = new PDO('mysql:host=localhost;dbname=Login', 'root', 'ashu1996');
 //echo "Connection is established...<br/>";
 $dbhandler->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$sql = "SELECT * from useraccounts where username='$u'";
-$query = $dbhandler->query($sql);
-$result = $query->fetch(PDO::FETCH_ASSOC);
-//$dbhandler.
+$setonline="INSERT INTO online VALUES('".$_SESSION['uname']."',1)";
+
+if(!isset($_SESSION['online']))
+{
+    $query = $dbhandler->query($setonline);
+$_SESSION['online']=true;
+}
+
+
+
+//$result = $query->fetch(PDO::FETCH_ASSOC);
+}
 ?>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Home Page</title>
-    </head>
-    <body>
-        <div>
-            <table border='2'>
-                <tr>
-                    <td style="height:100px">
-                        <?php                        
-                      <!--  $temp='"UserPhotos/'.$result['username'].'.jpg"'; -->
-                        echo '<img height="100" width="100" src='.$temp.'/>';                        
-                        ?>                                                                                       
-                    </td>
-                    <td>
-                        Username:
-                    </td>        
-                    <td>
-                        <?php
-                        echo $result['username'];
-                        ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Gender:
-                    </td>        
-                    <td>
-                        <?php
-                        echo $result['gender'];
-                        ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Birthdate:
-                    </td>        
-                    <td>
-                        <?php
-                        echo $result['bdate'];
-                        ?>
-                    </td>
-                </tr>                
-            </table>
+<head>
+<title>Home:</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="mystyle.css">
+<link rel="stylesheet" type="text/css" href="navstyle.css">
+</head>
+
+<body>
+
+    <nav id="nav-1">
+ <a class="link-1" href="home.php">Home</a>
+ <a class="link-1" href="profileview.php">Profile</a>
+ <a class="link-1" href="About_Us.html">About</a>
+ <a class="link-1" href="logout.php" >Logout</a>
+</nav>
+
+<div id="msg_bix">
+
+<div class="chat_window">
+    <div class="top_menu">
+        <div class="buttons"><a href="logout.php" ><div class="button close"></div></a>
+            
+            <div class="button minimize"></div>
+            <div class="button maximize"></div>
         </div>
-        <!--List of online users-->
-        <?php
-        
-        ?>
-    </body>
+        <div class="title"> <header> <div id="welcome">
+Welcome <?php echo $_SESSION['uname']; ?>,</div>
+  
+  </header>  </div>
+    </div>
+
+    <ul class="messages" >
+
+<div id="chat_window"> </div>
+
+    </ul>
+
+    
+    <div class="bottom_wrapper clearfix">
+        <div class="message_input_wrapper">
+           
+            <input class="message_input" id="txt_msg" placeholder="Type your message here..." />
+           
+        </div>
+        <div class="send_message" id="send_message">
+            <div class="icon"></div>
+            <div class="text">Send</div>
+        </div>
+    </div>
+
+</div>
+
+<div class="message_template">
+    <li class="message">
+        <div class="avatar"></div>
+        <div class="text_wrapper">
+            <div class="text"></div>
+        </div>
+    </li>
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<!--
+<form id="msg">
+    <input type="text" id="txt_msg"/>
+    <input type="submit" value="send">
+</form>
+   <
+<aside>
+    
+   <div id="users_online">USERS ONLINE:<br>
+<p>
+<?php
+$sql = "SELECT * from online WHERE login=1";
+$query = $dbhandler->query($sql);
+ while ($result= $query->fetch(PDO::FETCH_ASSOC))
+ {
+     print($result['username']."<br>");
+ }
+?></p>
+</div>
+</aside>
+
+-->
+
+<script src="myjs.js" ></script>
+
+</body>
 </html>

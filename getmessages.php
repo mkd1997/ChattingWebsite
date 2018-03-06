@@ -9,7 +9,7 @@ else
  {
      try
                 {
-$dbhandler = new PDO('mysql:host=localhost;dbname=mydata', 'root', 'bhargav');
+$dbhandler = new PDO('mysql:host=localhost;dbname=mydata', 'root');
 $dbhandler->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $sql = "SELECT * from groupchat";
                     $query = $dbhandler->query($sql);

@@ -1,4 +1,5 @@
 
+
 * {
   box-sizing: border-box;
 }
@@ -194,6 +195,12 @@ body {
 .message_template {
   display: none;
 }
-span{
-  display: block;
+.mymessage{
+    margin-bottom: 40px;
 }
+
+@import url(http://fonts.googleapis.com/css?family=Raleway);
+body {
+  margin: 0px;
+}
+
